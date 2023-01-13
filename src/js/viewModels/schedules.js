@@ -17,7 +17,7 @@ define(['knockout',
         'ojs/ojarraytabledatasource',                
         'ojs/ojtable',
         "ojs/ojbutton", 
-        "ojs/ojformlayout",
+        "ojs/ojformlayout","ojs/ojdatetimepicker"
         ],
  function(ko, ArrayDataProvider, ListDataProviderView, ojdataprovider_1) {
      
@@ -33,15 +33,35 @@ define(['knockout',
         
         self.data = ko.observableArray();
         
-        self.newParameter = ko.observable();
+        self.newSchedule = ko.observable();
         
-        self.newValue = ko.observable();
+        self.retailerArray = ko.observableArray();                   
+
+        self.retailer = ko.observable();
+
+        self.retailers = ko.computed(function () {                        
+
+            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "retailers").
+                then(function (retailers) {                                        
+                  self.retailerArray(retailers);                                        
+            });                                
+
+            return new ArrayDataProvider(
+                self.retailerArray,
+                {idAttribute: 'id'}
+            );        
+
+        });
+        
+        self.getItemText = function (itemContext) {
+            return itemContext.data.name;
+        };
 
         self.datasource = ko.computed(function () {                        
           
-            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "parameters").
-                then(function (parameters) {                                        
-                    self.data(parameters);                                        
+            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "schedules").
+                then(function (schedules) {                                        
+                    self.data(schedules);                                        
             });             
             
             let filterCriterion = null;                        
@@ -115,11 +135,11 @@ define(['knockout',
         
         self.submitRow = (key) => {                                       
                  
-            console.log(key);
+            console.log(key);                        
 
             $.ajax({                    
               type: "POST",
-              url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "parameters/save",                                        
+              url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "schedules/save",                                        
               dataType: "json",      
               data: JSON.stringify(self.rowData),			  		 
               //crossDomain: true,
@@ -213,7 +233,7 @@ define(['knockout',
 
             $.ajax({                    
               type: "DELETE",
-              url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "parameters/delete/" + key,                                        
+              url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "schedules/delete/" + key,                                        
               dataType: "json",                    
               //crossDomain: true,
               contentType : "application/json",                    
@@ -233,22 +253,22 @@ define(['knockout',
             document.getElementById("dialog1").open();                 
         }      
         
-        self.createParameter = function (event, data) {
+        self.createSchedule = function (event, data) {
                                                                                                                 
             // submit the form would go here
             //alert("everything is valid; submit the form");
-            var parameter = {};
+            var schedule = {};
 
-            parameter.name = self.newParameter();
-            parameter.value = self.newValue();
+            schedule.retailer = self.getRetailerById(self.retailer());
+            schedule.schedule = self.newSchedule();
 
-            console.log(JSON.stringify(parameter));
+            alert(JSON.stringify(schedule));
 
             $.ajax({                    
                 type: "POST",
-                url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "parameters/save",                                        
+                url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "schedules/save",                                        
                 dataType: "json",      
-                data: JSON.stringify(parameter),			  		 
+                data: JSON.stringify(schedule),			  		 
                 //crossDomain: true,
                 contentType : "application/json",                    
                 success: function() {                    
@@ -257,16 +277,33 @@ define(['knockout',
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
-                    self.newHolding(null);
+                    self.retailer(null);
+                    self.newSchedule(null);
                 },
                 error: function (request, status, error) {                                
                     alert(error);                          
                 },                                  
             });
 
-        }                            
+        }  
+        
+        self.getRetailerById = (id) => {                      
+            
+            var toReturn; 
+
+            $(self.retailerArray()).each(function(key, value) {                                 
+
+                if(value.id === id) {                    
+                    toReturn = value;
+                    return false;
+                }                
+            });
+
+            return toReturn;                                                                           
+        };
                                                         
     }
+   
     
     /*
      * Returns an instance of the ViewModel providing one instance of the ViewModel. If needed,

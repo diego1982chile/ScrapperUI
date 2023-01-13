@@ -70,7 +70,7 @@
               columns='[
                         {"field": "retailer",                        
                         "headerText": "Retailer",                                                    
-                        "template": "clientTemplate"},
+                        "template": "retailerTemplate"},
                         {"field": "holding",                        
                         "headerText": "Holding",                                                    
                         "template": "holdingTemplate"},                          
@@ -101,7 +101,7 @@
         <oj-bind-text value="[[cell.data]]"></oj-bind-text>
       </template>  
           
-      <template slot="clientTemplate" data-oj-as="cell">
+      <template slot="retailerTemplate" data-oj-as="cell">
         <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
       </template> 
           

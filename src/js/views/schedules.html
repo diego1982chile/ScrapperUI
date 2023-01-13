@@ -5,14 +5,34 @@
  -->
 <STYLE TYPE="text/css">
     
-    .oj-table-column-header-cell:last-child {
-        width: 70px;
-    }
-    
   .editable {
       /*width: 4em !important;*/
       /*max-width: 150px !important;*/
-  }  
+  }
+
+    .oj-table-column-header-cell:last-child {
+        width: 70px;
+    }
+
+    .demo-table-checkbox {
+        min-width: auto !important; 
+    }
+    .demo-table-container {
+        width: 100%;
+        height: 27rem;
+    }
+    
+          .oj-listview-item {
+          padding: 0em !important;
+      }
+      
+      .oj-text-field {
+          max-width: 100em !important;
+      }
+      
+      .oj-searchselect {
+          max-width: 100em !important;
+      }  
   
 </STYLE>
 
@@ -39,7 +59,7 @@
             </oj-input-text>
 
             <oj-button chroming="callToAction" on-oj-action="[[openDialog]]" id='borderlessPushIcon' style="float:right" >                      
-                New Holding
+                New Schedule
             </oj-button> 
         </div>   
         
@@ -54,12 +74,12 @@
               on-oj-before-row-edit-end='[[beforeRowEditEndListener]]'
               columns-default.sortable='disabled'              
               columns='[
-                        {"field": "name",                          
-                        "headerText": "Name",                                                    
-                        "template": "nameTemplate"}, 
-                        {"field": "value",                          
-                        "headerText": "Value",                                                    
-                        "template": "valueTemplate"},    
+                        {"field": "retailer",                          
+                        "headerText": "Retailer",                                                    
+                        "template": "retailerTemplate"}, 
+                        {"field": "schedule",                          
+                        "headerText": "Schedule",                                                    
+                        "template": "scheduleTemplate"},    
                         { "headerText": "Action",              
                           "width": "6em",                          
                           "headerStyle": "text-align: center;",
@@ -71,23 +91,17 @@
               <oj-bind-text value="[[cell.data]]"></oj-bind-text>
             </template>          
 
-            <template slot="nameTemplate" data-oj-as="cell">
-              <oj-bind-if test='[[cell.mode=="navigation"]]'>
-                <oj-bind-text value="[[cell.data]]"></oj-bind-text>
-              </oj-bind-if>
-
-              <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.name}}" class="editable"></oj-input-text>
-              </oj-bind-if>
-            </template>
+            <template slot="retailerTemplate" data-oj-as="cell">
+                <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
+            </template> 
             
-            <template slot="valueTemplate" data-oj-as="cell">
+            <template slot="scheduleTemplate" data-oj-as="cell">
               <oj-bind-if test='[[cell.mode=="navigation"]]'>
                 <oj-bind-text value="[[cell.data]]"></oj-bind-text>
               </oj-bind-if>
 
-              <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.value}}" class="editable"></oj-input-text>
+              <oj-bind-if test='[[cell.mode=="edit"]]'>                            
+                <oj-input-time id="it1" value="{{rowData.schedule}}" class="editable"></oj-input-time>
               </oj-bind-if>
             </template>
 
@@ -116,25 +130,31 @@
 
     </oj-form-layout>   
         
-    <oj-dialog id="dialog1" dialog-title="New Parameter" cancel-behavior="icon">
+    <oj-dialog id="dialog1" dialog-title="New Schedule" cancel-behavior="icon">
         <div slot="body">
-            <oj-label-value label-edge="top">
-                <oj-label slot="label" for="newParameter">Name:</oj-label>
-                <oj-input-text slot="value" 
-                               id="newParameter"                                          
-                               value="{{newParameter}}" 
-                               required="required"></oj-input-text>
-            </oj-label-value>
-            <oj-label-value label-edge="top">
-                <oj-label slot="label" for="newValue">Value:</oj-label>
-                <oj-input-text slot="value" 
-                               id="newValue"                                          
-                               value="{{newValue}}" 
-                               required="required"></oj-input-text>
-            </oj-label-value>
+            <oj-form-layout id="myForm" label-edge="start" columns="1" max-columns="1" style="width:100%">                       
+                <oj-select-single 
+                        id="retailer" 
+                        label-hint="Retailer"                    
+                        value="{{retailer}}"                        
+                        required
+                        item-text="[[getItemText]]"                        
+                        data="[[retailers]]">
+                        <template slot="itemTemplate" data-oj-as="item">
+                            <oj-list-item-layout style="padding:0em">                              
+                                <span>
+                                  <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                                </span>                            
+                            </oj-list-item-layout>
+                        </template>
+                </oj-select-single>
+                <oj-input-time value="{{newSchedule}}" label-hint="Schedule" 
+                    required="required" id="newSchedule"></oj-input-time>
+                
+            </oj-form-layout> 
         </div>
         <div slot="footer">
-          <oj-button id="okButton" chroming="callToAction" on-oj-action="[[createParameter]]">Submit</oj-button>
+          <oj-button id="okButton" chroming="callToAction" on-oj-action="[[createSchedule]]">Submit</oj-button>
         </div>
   </oj-dialog>
      

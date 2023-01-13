@@ -75,6 +75,7 @@ define(['knockout',
               
               self.originalData = Object.assign({}, self.getById(rowContext.status.rowKey));
               self.rowData = Object.assign({}, self.getById(rowContext.status.rowKey));
+                            
               
               console.log(self.rowData);
         };
