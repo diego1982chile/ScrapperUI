@@ -145,13 +145,13 @@ define(['knockout',
               //crossDomain: true,
               contentType : "application/json",                    
               success: function() {                    
-                    alert("Registro grabado correctamente");
+                    var msg = "Record has been succesfuly saved";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
               },
-              error: function (request, status, error) {
-                    alert(request.responseText);                          
+              error: function (request, status, error) {                    
               },                                  
             });
                                                                            
@@ -238,13 +238,13 @@ define(['knockout',
               //crossDomain: true,
               contentType : "application/json",                    
               success: function() {                    
-                    alert("Registro borrado correctamente");
+                    var msg = "Record has been succesfuly saved";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
               },
-              error: function (request, status, error) {
-                    alert(request.responseText);                          
+              error: function (request, status, error) {                    
               },                                  
             });                                                                           
         };
@@ -255,36 +255,44 @@ define(['knockout',
         
         self.createSchedule = function (event, data) {
                                                                                                                 
-            // submit the form would go here
-            //alert("everything is valid; submit the form");
-            var schedule = {};
+            let element1 = document.getElementById("retailer");            
+            
+            let element2 = document.getElementById("newSchedule");
+            
+            element1.validate().then((result1) => {
+                
+                element2.validate().then((result2) => {
+                                        
+                    if (result1 === "valid" && result2 === "valid") {
+                        
+                        var schedule = {};
 
-            schedule.retailer = self.getRetailerById(self.retailer());
-            schedule.schedule = self.newSchedule();
+                        schedule.retailer = self.getRetailerById(self.retailer());
+                        schedule.schedule = self.newSchedule();
 
-            alert(JSON.stringify(schedule));
-
-            $.ajax({                    
-                type: "POST",
-                url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "schedules/save",                                        
-                dataType: "json",      
-                data: JSON.stringify(schedule),			  		 
-                //crossDomain: true,
-                contentType : "application/json",                    
-                success: function() {                    
-                    alert("Registro grabado correctamente");
-                    document.getElementById("dialog1").close();    
-                    var val = $("#filter").val();
-                    $("#filter").val(" ");
-                    $("#filter").val(val);
-                    self.retailer(null);
-                    self.newSchedule(null);
-                },
-                error: function (request, status, error) {                                
-                    alert(error);                          
-                },                                  
+                        $.ajax({                    
+                            type: "POST",
+                            url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "schedules/save",                                        
+                            dataType: "json",      
+                            data: JSON.stringify(schedule),			  		 
+                            //crossDomain: true,
+                            contentType : "application/json",                    
+                            success: function() {                    
+                                var msg = "Record has been succesfuly saved";
+                                ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
+                                document.getElementById("dialog1").close();    
+                                var val = $("#filter").val();
+                                $("#filter").val(" ");
+                                $("#filter").val(val);
+                                self.retailer(null);
+                                self.newSchedule(null);
+                            },
+                            error: function (request, status, error) {                                                    
+                            },                                  
+                        });
+                    }
+                });
             });
-
         }  
         
         self.getRetailerById = (id) => {                      

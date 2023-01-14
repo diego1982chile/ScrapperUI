@@ -37,8 +37,8 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
         { path: '', id: 'login', detail: { label: 'Login', iconClass: 'oj-ux-ico-information-s' }, redirect: 'login' },
         { path: 'login', id: 'login', detail: { label: 'Login', iconClass: 'oj-ux-ico-information-s' } }, 
         { path: 'accounts', id: 'accounts', detail: { label: 'Accounts', iconClass: 'oj-ux-ico-bar-chart' } },        
-        { path: 'retailers', id: 'retailers', detail: { label: 'Retailers', iconClass: 'oj-ux-ico-bar-chart' } },
-        { path: 'holdings', id: 'holdings', detail: { label: 'Holdings', iconClass: 'oj-ux-ico-bar-chart' } },     
+        { path: 'clients', id: 'clients', detail: { label: 'Clients', iconClass: 'oj-ux-ico-bar-chart' } },
+        { path: 'retailers', id: 'retailers', detail: { label: 'Retailers', iconClass: 'oj-ux-ico-bar-chart' } },     
         { path: 'parameters', id: 'parameters', detail: { label: 'Parameters', iconClass: 'oj-ux-ico-bar-chart' } },
         { path: 'schedules', id: 'schedules', detail: { label: 'Schedules', iconClass: 'oj-ux-ico-bar-chart' } }
       ];
@@ -203,6 +203,7 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
                 var rootViewModel = ko.dataFor(document.getElementById('globalBody'));  
                 rootViewModel.messages([{severity: 'info', summary: 'Succesful DB Reset', detail: msg, autoTimeout: 5000}]);
                 rootViewModel.closeDialog();
+                rootViewModel.router.go({path: 'login'}); 
           },
           error: function (request, status, error) {
                 alert(request.responseText);                          

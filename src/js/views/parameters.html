@@ -39,7 +39,7 @@
             </oj-input-text>
 
             <oj-button chroming="callToAction" on-oj-action="[[openDialog]]" id='borderlessPushIcon' style="float:right" >                      
-                New Holding
+                New Parameter
             </oj-button> 
         </div>   
         
@@ -77,7 +77,7 @@
               </oj-bind-if>
 
               <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.name}}" class="editable"></oj-input-text>
+                <oj-input-text id="it1" value="{{rowData.name}}" required class="editable"></oj-input-text>
               </oj-bind-if>
             </template>
             
@@ -87,7 +87,7 @@
               </oj-bind-if>
 
               <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.value}}" class="editable"></oj-input-text>
+                <oj-input-text id="it1" value="{{rowData.value}}" required class="editable"></oj-input-text>
               </oj-bind-if>
             </template>
 

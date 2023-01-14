@@ -21,7 +21,7 @@
 </SCRIPT>
  
 <div class="oj-hybrid-padding">
-  <h1>Holdings</h1>
+  <h1>Clients</h1>
 
   <hr>
   <br>  
@@ -30,17 +30,17 @@
       
     <div id="tableWrapper" class="oj-xl-3 oj-lg-3 oj-md-6 oj-sm-12 oj-flex-item oj-flex">
 
-    <oj-form-layout id="myForm" label-edge="top" columns="1" max-columns="1" style="width:100%">  
+    <oj-form-layout id="myForm" label-edge="top" columns="1" max-columns="1" style="width:100%"> 
         
         <div aria-labelledby="grouplabel1">
             <oj-input-text id="filter" class="oj-form-control-max-width-md" label-hint="Filter" label-edge="inside"
-                   placeholder="Type to filter" on-raw-value-changed="[[handleValueChanged]]" 
-                   value="{{filter}}" clear-icon="always">                         
-            </oj-input-text>
+                placeholder="Type to filter" on-raw-value-changed="[[handleValueChanged]]" 
+                value="{{filter}}" clear-icon="always">                         
+           </oj-input-text>
             <oj-button chroming="callToAction" on-oj-action="[[openDialog]]" id='borderlessPushIcon' style="float:right" >                      
-                New Holding
-            </oj-button>  
-        </div>
+                New Client
+            </oj-button> 
+        </div>               
         
         <oj-table id="table" style="width:100%"
               aria-label="Departments Table"
@@ -54,7 +54,7 @@
               columns-default.sortable='disabled'              
               columns='[
                         {"field": "name",                          
-                        "headerText": "Holding",                                                    
+                        "headerText": "Client",                                                    
                         "template": "clientTemplate"},                                              
                         { "headerText": "Action",              
                           "width": "6em",                          
@@ -73,7 +73,7 @@
               </oj-bind-if>
 
               <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.name}}" class="editable"></oj-input-text>
+                <oj-input-text id="it1" value="{{rowData.name}}" required class="editable"></oj-input-text>
               </oj-bind-if>
             </template>
 
@@ -102,18 +102,19 @@
 
     </oj-form-layout>   
         
-    <oj-dialog id="dialog1" dialog-title="New Holding" cancel-behavior="icon">
+    <oj-dialog id="dialog1" dialog-title="New Client" cancel-behavior="icon">
         <div slot="body">
-            <oj-label-value label-edge="top">
-              <oj-label slot="label" for="newHolding">Name:</oj-label>
-              <oj-input-text slot="value" 
-                             id="newHolding"                                          
-                             value="{{newHolding}}" 
-                             required="required"></oj-input-text>
-            </oj-label-value>
+            <oj-form-layout id="myForm" label-edge="start" columns="1" max-columns="1" style="width:100%">                                
+              <oj-input-text 
+                  label-hint="Client"                                        
+                  id="newClient"                                                                       
+                  value="{{newClient}}" 
+                  required="required">                                 
+              </oj-input-text>
+            </oj-form-layout> 
         </div>
         <div slot="footer">
-          <oj-button id="okButton" chroming="callToAction" on-oj-action="[[createHolding]]">Submit</oj-button>
+            <oj-button id="okButton" chroming="callToAction" on-oj-action="[[createClient]]">Submit</oj-button>
         </div>
     </oj-dialog>
      

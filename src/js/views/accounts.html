@@ -68,12 +68,12 @@
               on-oj-before-row-edit-end='[[beforeRowEditEndListener]]'
               columns-default.sortable='disabled'              
               columns='[
+                        {"field": "client",                        
+                        "headerText": "Client",                                                    
+                        "template": "clientTemplate"},
                         {"field": "retailer",                        
                         "headerText": "Retailer",                                                    
-                        "template": "retailerTemplate"},
-                        {"field": "holding",                        
-                        "headerText": "Holding",                                                    
-                        "template": "holdingTemplate"},                          
+                        "template": "retailerTemplate"},                          
                         {"field":"user",
                          "sortable": "enabled",
                          "headerText": "User",
@@ -101,11 +101,11 @@
         <oj-bind-text value="[[cell.data]]"></oj-bind-text>
       </template>  
           
-      <template slot="retailerTemplate" data-oj-as="cell">
+      <template slot="clientTemplate" data-oj-as="cell">
         <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
       </template> 
           
-      <template slot="holdingTemplate" data-oj-as="cell">
+      <template slot="retailerTemplate" data-oj-as="cell">
         <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
       </template> 
 
@@ -169,12 +169,12 @@
             <oj-form-layout id="myForm" label-edge="start" columns="1" max-columns="1" style="width:100%">    
                                 
                 <oj-select-single 
-                    id="retailer" 
-                    label-hint="Retailer"                    
-                    value="{{retailer}}"                        
+                    id="client" 
+                    label-hint="Client"                    
+                    value="{{client}}"                        
                     required
                     item-text="[[getItemText]]"                        
-                    data="[[retailers]]">
+                    data="[[clients]]">
                     <template slot="itemTemplate" data-oj-as="item">
                         <oj-list-item-layout style="padding:0em">                              
                             <span>
@@ -185,12 +185,12 @@
                 </oj-select-single>
                 
                 <oj-select-single 
-                    id="holding" 
-                    label-hint="Holding"                    
-                    value="{{holding}}"                        
+                    id="retailer" 
+                    label-hint="Retailer"                    
+                    value="{{retailer}}"                        
                     required
                     item-text="[[getItemText]]"                        
-                    data="[[holdings]]">
+                    data="[[retailers]]">
                     <template slot="itemTemplate" data-oj-as="item">
                         <oj-list-item-layout style="padding:0em">                              
                             <span>

@@ -21,7 +21,9 @@ define(['knockout',
         ],
  function(ko, ArrayDataProvider, ListDataProviderView, ojdataprovider_1) {
      
-    function RetailersViewModel() {
+    function DashboardViewModel() {
+        // Below are a set of the ViewModel methods invoked by the oj-module component.
+        // Please reference the oj-module jsDoc for additional information.
 
         var self = this;
         
@@ -121,7 +123,8 @@ define(['knockout',
               //crossDomain: true,
               contentType : "application/json",                    
               success: function() {                    
-                    alert("Registro grabado correctamente");
+                    var msg = "Record has been succesfuly saved";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
@@ -191,7 +194,7 @@ define(['knockout',
             
             var toReturn; 
                  
-            $(self.data()).each(function(key, value) {                                 
+            $(self.data()).each(function(key,value) {                                 
                 
                 if(value.id === id) {                    
                     toReturn = value;
@@ -203,10 +206,6 @@ define(['knockout',
                                                                            
         };
         
-        self.openDialog = (event, data) => {                        
-            document.getElementById("dialog1").open();                 
-        }  
-        
         self.deleteRow = (key) => {                                       
                  
             console.log(key);
@@ -217,8 +216,9 @@ define(['knockout',
               dataType: "json",                    
               //crossDomain: true,
               contentType : "application/json",                    
-              success: function() {                    
-                    alert("Registro borrado correctamente");
+              success: function() {                                        
+                    var msg = "Record has been succesfuly deleted";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Deleted', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
@@ -228,49 +228,55 @@ define(['knockout',
               },                                  
             });                                                                           
         };
-           
+        
+        self.openDialog = function(event, data) {                        
+            document.getElementById("dialog1").open();                 
+        }      
         
         self.createRetailer = function (event, data) {
-                                                                                                                
-            // submit the form would go here
-            //alert("everything is valid; submit the form");
-            var retailer = {};
+            
+            let element1 = document.getElementById("newRetailer");            
+            
+            element1.validate().then((result1) => {
+               
+                if (result1 === "valid") {
+                                                                                                                            
+                    var retailer = {};
 
-            retailer.name = self.newRetailer();
+                    retailer.name = self.newRetailer();
 
-            console.log(JSON.stringify(retailer));
+                    console.log(JSON.stringify(retailer));
 
-            $.ajax({                    
-                type: "POST",
-                url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "retailers/save",                                        
-                dataType: "json",      
-                data: JSON.stringify(retailer),			  		 
-                //crossDomain: true,
-                contentType : "application/json",                    
-                success: function() {                    
-                    alert("Registro grabado correctamente");
-                    document.getElementById("dialog1").close();    
-                    var val = $("#filter").val();
-                    $("#filter").val(" ");
-                    $("#filter").val(val);
-                    self.newRetailer(null);
-                },
-                error: function (request, status, error) {                                
-                    alert(error);                          
-                },                                  
+                    $.ajax({                    
+                        type: "POST",
+                        url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "retailers/save",                                        
+                        dataType: "json",      
+                        data: JSON.stringify(retailer),			  		 
+                        //crossDomain: true,
+                        contentType : "application/json",                    
+                        success: function() {                                        
+                            var msg = "Record has been succesfuly saved";
+                            ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
+                            document.getElementById("dialog1").close();    
+                            var val = $("#filter").val();
+                            $("#filter").val(" ");
+                            $("#filter").val(val);
+                            self.newRetailer(null);
+                        },
+                        error: function (request, status, error) {                                
+                            alert(error);                          
+                        },                                  
+                    });
+                }
             });
-
-        }                            
-       
-                                                        
+        }                                                                                    
     }
-     
     
     /*
      * Returns an instance of the ViewModel providing one instance of the ViewModel. If needed,
      * return a constructor for the ViewModel so that the ViewModel is constructed
      * each time the view is displayed.
      */
-    return RetailersViewModel;
+    return DashboardViewModel;
   }
 );

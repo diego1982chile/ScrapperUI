@@ -125,7 +125,8 @@ define(['knockout',
               //crossDomain: true,
               contentType : "application/json",                    
               success: function() {                    
-                    alert("Registro grabado correctamente");
+                    var msg = "Record has been succesfuly saved";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
@@ -217,14 +218,14 @@ define(['knockout',
               dataType: "json",                    
               //crossDomain: true,
               contentType : "application/json",                    
-              success: function() {                    
-                    alert("Registro borrado correctamente");
+              success: function() {                                        
+                    var msg = "Record has been succesfuly deleted";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Deleted', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
                     $("#filter").val(val);
               },
-              error: function (request, status, error) {
-                    alert(request.responseText);                          
+              error: function (request, status, error) {                                            
               },                                  
             });                                                                           
         };
@@ -234,34 +235,45 @@ define(['knockout',
         }      
         
         self.createParameter = function (event, data) {
-                                                                                                                
-            // submit the form would go here
-            //alert("everything is valid; submit the form");
-            var parameter = {};
+            
+            let element1 = document.getElementById("newParameter");            
+            
+            let element2 = document.getElementById("newValue");
+            
+            element1.validate().then((result1) => {
+                
+                element2.validate().then((result2) => {
+               
+                    if (result1 === "valid" && result2 === "valid") {
 
-            parameter.name = self.newParameter();
-            parameter.value = self.newValue();
+                        var parameter = {};
 
-            console.log(JSON.stringify(parameter));
+                        parameter.name = self.newParameter();
+                        parameter.value = self.newValue();
 
-            $.ajax({                    
-                type: "POST",
-                url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "parameters/save",                                        
-                dataType: "json",      
-                data: JSON.stringify(parameter),			  		 
-                //crossDomain: true,
-                contentType : "application/json",                    
-                success: function() {                    
-                    alert("Registro grabado correctamente");
-                    document.getElementById("dialog1").close();    
-                    var val = $("#filter").val();
-                    $("#filter").val(" ");
-                    $("#filter").val(val);
-                    self.newHolding(null);
-                },
-                error: function (request, status, error) {                                
-                    alert(error);                          
-                },                                  
+                        console.log(JSON.stringify(parameter));
+
+                        $.ajax({                    
+                            type: "POST",
+                            url: ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "parameters/save",                                        
+                            dataType: "json",      
+                            data: JSON.stringify(parameter),			  		 
+                            //crossDomain: true,
+                            contentType : "application/json",                    
+                            success: function() {                    
+                                var msg = "Record has been succesfuly saved";
+                                ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
+                                document.getElementById("dialog1").close();    
+                                var val = $("#filter").val();
+                                $("#filter").val(" ");
+                                $("#filter").val(val);
+                                self.newHolding(null);
+                            },
+                            error: function (request, status, error) {                                                           
+                            },                                  
+                        });
+                    }                    
+                });
             });
 
         }                            

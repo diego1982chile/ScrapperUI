@@ -101,7 +101,7 @@
               </oj-bind-if>
 
               <oj-bind-if test='[[cell.mode=="edit"]]'>                            
-                <oj-input-time id="it1" value="{{rowData.schedule}}" class="editable"></oj-input-time>
+                <oj-input-time id="it1" value="{{rowData.schedule}}" required class="editable"></oj-input-time>
               </oj-bind-if>
             </template>
 
@@ -149,7 +149,8 @@
                         </template>
                 </oj-select-single>
                 <oj-input-time value="{{newSchedule}}" label-hint="Schedule" 
-                    required="required" id="newSchedule"></oj-input-time>
+                    required="required" id="newSchedule">                       
+                </oj-input-time>
                 
             </oj-form-layout> 
         </div>

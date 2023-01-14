@@ -43,7 +43,7 @@ define(['knockout',
                     //filterDef: { text: self.filter() },
                     filterDef: {op: '$or', 
                                 criteria: [{op: '$co', value: {client: { name : self.filter() }}},
-                                           {op: '$co', value: {holding: { name : self.filter() }}}]
+                                           {op: '$co', value: {retailer: { name : self.filter() }}}]
                                 },
                     //filterOptions: {textFilterAttributes: ["client"]}
                 });
@@ -61,7 +61,6 @@ define(['knockout',
                                             {filterCriterion: filterCriterion},
                                             );
                                                  
-            
         });      
         
         
@@ -109,14 +108,16 @@ define(['knockout',
               data: JSON.stringify(self.rowData),			  		 
               //crossDomain: true,
               contentType : "application/json",                    
-              success: function() {                    
-                    alert("Registro grabado correctamente");
+              success: function() {                                        
+                    var msg = "Record has been succesfuly saved";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
-                    $("#filter").val(val);
+                    self.sleep(100).then(() => {   
+                        $("#filter").val(val);
+                    });   
               },
-              error: function (request, status, error) {
-                    alert(request.responseText);                          
+              error: function (request, status, error) {                                      
               },                                  
             });
                                                                            
@@ -162,7 +163,7 @@ define(['knockout',
         self.handleCancel = () => {                                                                 
             
             var txt;
-            var r = confirm("¿Está seguro que desea eliminar el registro?");
+            var r = confirm("Are you sure you want to delete this record?");
             
             if (r == true) {
                 self.deleteRow(self.rowData.id);
@@ -202,31 +203,33 @@ define(['knockout',
               dataType: "json",                    
               //crossDomain: true,
               contentType : "application/json",                    
-              success: function() {                    
-                    alert("Registro borrado correctamente");
+              success: function() {                                        
+                    var msg = "Record has been succesfuly deleted";
+                    ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Deleted', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
-                    $("#filter").val(" ");
-                    $("#filter").val(val);
+                    $("#filter").val(" ");                    
+                    self.sleep(100).then(() => {   
+                        $("#filter").val(val);
+                    });   
               },
-              error: function (request, status, error) {
-                    alert(request.responseText);                          
+              error: function (request, status, error) {                                    
               },                                  
             });                                                                           
         };
         
-        self.retailerArray = ko.observableArray();                   
+        self.clientArray = ko.observableArray();                   
 
-        self.retailer = ko.observable();
+        self.client = ko.observable();
 
-        self.retailers = ko.computed(function () {                        
+        self.clients = ko.computed(function () {                        
 
-            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "retailers").
-                then(function (retailers) {                                        
-                  self.retailerArray(retailers);                                        
+            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "clients").
+                then(function (clients) {                                        
+                  self.clientArray(clients);                                        
             });                                
 
             return new ArrayDataProvider(
-                self.retailerArray,
+                self.clientArray,
                 {idAttribute: 'id'}
             );        
 
@@ -236,19 +239,17 @@ define(['knockout',
             return itemContext.data.name;
         };
         
-        self.holdingArray = ko.observableArray();                   
-
-        self.holding = ko.observable();
+        self.retailerArray = ko.observableArray();                           
         
-        self.holdings = ko.computed(function () {                        
+        self.retailers = ko.computed(function () {                        
 
-            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "holdings").
-                then(function (holdings) {                                        
-                  self.holdingArray(holdings);                                        
+            $.getJSON(ko.dataFor(document.getElementById('globalBody')).scrapperServiceBaseUrl() + "retailers").
+                then(function (retailers) {                                        
+                  self.retailerArray(retailers);                                        
             });                                
 
             return new ArrayDataProvider(
-                self.holdingArray,
+                self.retailerArray,
                 {idAttribute: 'id'}
             );        
 
@@ -264,16 +265,13 @@ define(['knockout',
         
         self.createAccount = function (event, data) {
             
-            let element1 = document.getElementById("retailer");
-            let element2 = document.getElementById("holding");            
+            let element1 = document.getElementById("client");
+            let element2 = document.getElementById("retailer");            
             let element3 = document.getElementById("user");
             let element4 = document.getElementById("password");
             
             let valid = false;
-            // validate them both, and when they are both done
-            // validating and valid, submit the form.
-            // Calling validate() will update the component's
-            // valid property
+
             element1.validate().then((result1) => {
 
                 element2.validate().then((result2) => {
@@ -288,8 +286,8 @@ define(['knockout',
                                 //alert("everything is valid; submit the form");
                                 var account = {};
             
+                                account.client = self.getClientById(data.client());
                                 account.retailer = self.getRetailerById(data.retailer());
-                                account.holding = self.getHoldingById(data.holding());
                                 account.user = data.user();
                                 account.password = data.password();
                                 account.company = data.company();
@@ -305,16 +303,19 @@ define(['knockout',
                                     data: JSON.stringify(account),			  		 
                                     //crossDomain: true,
                                     contentType : "application/json",                    
-                                    success: function() {                    
-                                        alert("Registro grabado correctamente");
+                                    success: function() {                                                            
+                                        var msg = "Record has been succesfuly saved";
+                                        ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                                         $("input").val(""); 
                                         var val = $("#filter").val();
                                         $("#filter").val(" ");
-                                        $("#filter").val(val);
+                                        self.sleep(100).then(() => {   
+                                            $("#filter").val(val);
+                                        });                                                                                 
+                                        document.getElementById('table').refresh();
                                         document.getElementById("dialog1").close();     
                                     },
-                                    error: function (request, status, error) {
-                                        alert(request.responseText);                          
+                                    error: function (request, status, error) {                                                                  
                                     },                                  
                                 });            
                             }
@@ -341,11 +342,11 @@ define(['knockout',
             return toReturn;                                                                           
         };
         
-        self.getHoldingById = (id) => {                      
+        self.getClientById = (id) => {                      
             
             var toReturn; 
                  
-            $(self.holdingArray()).each(function(key, value) {                                 
+            $(self.clientArray()).each(function(key, value) {                                 
                 
                 if(value.id === id) {                    
                     toReturn = value;
@@ -360,6 +361,10 @@ define(['knockout',
         self.openDialog = function(event, data) {                        
             document.getElementById("dialog1").open();                 
         } 
+        
+        self.sleep = (ms) => {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
         
     }
     
