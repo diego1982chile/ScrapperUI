@@ -34,6 +34,8 @@
 <SCRIPT>      
     
 </SCRIPT>
+
+<div class="oj-panel oj-sm-margin-4x">
  
 <div class="oj-hybrid-padding">
   <h1>Accounts</h1>
@@ -74,9 +76,9 @@
                         {"field": "retailer",                        
                         "headerText": "Retailer",                                                    
                         "template": "retailerTemplate"},                          
-                        {"field":"user",
+                        {"field":"username",
                          "sortable": "enabled",
-                         "headerText": "User",
+                         "headerText": "Username",
                          "weight": "2",
                          "minWidth": "10rem",
                          "template": "userTemplate"},
@@ -111,37 +113,52 @@
 
       <template slot="userTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+          <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>            
-          <oj-input-text id="it1" value="{{rowData.user}}" class="editable"></oj-input-text>
+          <oj-input-text id="it1" value="{{rowData.username}}" class="editable"></oj-input-text>          
         </oj-bind-if>
       </template>
         
       <template slot="passwordTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+          <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+          <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>
-          <oj-input-text id="it2" value="{{rowData.password}}" class="editable"></oj-input-text>
+          <oj-input-text id="it2" value="{{rowData.password}}" class="editable"></oj-input-text>            
         </oj-bind-if>
       </template>
         
       <template slot="companyTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+          <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>
-          <oj-input-text id="it3" value="{{rowData.company}}" class="editable"></oj-input-text>
+          <oj-input-text id="it3" value="{{rowData.company}}" class="editable"></oj-input-text>            
         </oj-bind-if>
       </template>
         
       <template slot="actionTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <oj-button display='icons' chroming='borderless' on-oj-action="[[handleUpdate]]">
+          <oj-button display='icons' chroming='callToAction' on-oj-action="[[handleUpdate]]">
             <span slot='startIcon' class="oj-ux-ico-edit"></span>
             Edit
           </oj-button>
@@ -231,4 +248,6 @@
       
 </div>
   
+</div>
+    
 </div>

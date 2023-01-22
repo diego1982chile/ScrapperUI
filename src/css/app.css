@@ -51,3 +51,53 @@ html[dir="rtl"] .demo-oracle-icon {
       transform:translate(-25%, -25%) scale(0.5)
   }
 }
+
+/* CUSTOM STYLE */
+
+.oj-web-applayout-page {
+    background: #f3f2f1;
+}
+
+.oj-web-applayout-header {
+    background: #1d2733;    
+}
+
+.oj-web-applayout-header span {    
+    color: white !important;
+}
+
+.oj-web-applayout-header h1 {    
+    color: white !important;
+}
+
+.oj-web-applayout-header .oj-hover {    
+    color: red !important;
+}
+
+.oj-web-applayout-footer {
+    background-color: #fbfbfb;
+    /*background: #1d2733;*/    
+    border-top: 1px solid var(--oc-colors-main-fgLighter,#b5bbc2);      
+}
+
+/*
+.oj-web-applayout-footer span {    
+    color: white !important;
+}
+
+.oj-web-applayout-footer a {    
+    color: white !important;
+}
+*/
+    
+.oj-panel {
+    border: 1px solid var(--oc-colors-main-fgLighter,#b5bbc2);    
+}
+
+.oj-navigationlist-item.oj-selected {
+    border-color: white;
+}
+
+.oj-web-applayout-header button:hover {
+    background: #1d2733 !important;
+}

@@ -86,9 +86,11 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
     
     this.isAdmin = ko.observable(false);
 
-    this.scrapperServiceBaseUrl = ko.observable("http://192.168.0.5:8080/ScrapperService/api/");
+    this.scrapperServiceBaseUrl = ko.observable("http://144.22.36.129:8080/ScrapperConfig/api/");
 
-    this.tokenServiceBaseUrl = ko.observable("http://192.168.0.5:8181/TokenService/rest/");
+    //this.scrapperServiceBaseUrl = ko.observable("http://instance-scrapper-apis.subnet01161944.vcn01161944.oraclevcn.com:8080/ScrapperConfig/api/");
+
+    this.tokenServiceBaseUrl = ko.observable("http://192.168.0.5:8181/TokenService/api/");
       
     this.messages = ko.observableArray();
   

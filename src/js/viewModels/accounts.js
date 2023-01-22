@@ -113,7 +113,7 @@ define(['knockout',
                     ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");
-                    self.sleep(100).then(() => {   
+                    self.sleep(500).then(() => {   
                         $("#filter").val(val);
                     });   
               },
@@ -208,7 +208,7 @@ define(['knockout',
                     ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Deleted', detail: msg, autoTimeout: 5000}]);
                     var val = $("#filter").val();
                     $("#filter").val(" ");                    
-                    self.sleep(100).then(() => {   
+                    self.sleep(500).then(() => {   
                         $("#filter").val(val);
                     });   
               },
@@ -309,7 +309,7 @@ define(['knockout',
                                         $("input").val(""); 
                                         var val = $("#filter").val();
                                         $("#filter").val(" ");
-                                        self.sleep(100).then(() => {   
+                                        self.sleep(500).then(() => {   
                                             $("#filter").val(val);
                                         });                                                                                 
                                         document.getElementById('table').refresh();
