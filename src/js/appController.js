@@ -9,7 +9,7 @@
  * Your application specific code will go here
  */
 define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknockouttemplateutils', 'ojs/ojcorerouter', 'ojs/ojmodulerouter-adapter', 'ojs/ojknockoutrouteradapter', 'ojs/ojurlparamadapter', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 'ojs/ojarraydataprovider',
-        'ojs/ojoffcanvas', 'ojs/ojmodule-element', 'ojs/ojknockout', 'ojs/ojarraytabledatasource','ojs/ojmessages', 'ojs/ojdialog', "ojs/ojformlayout", "ojs/ojbutton", "ojs/ojlabelvalue", "ojs/ojlabel"],
+        'ojs/ojoffcanvas', 'ojs/ojmodule-element', 'ojs/ojknockout', 'ojs/ojarraytabledatasource','ojs/ojmessages', 'ojs/ojdialog', "ojs/ojformlayout", "ojs/ojbutton", "ojs/ojlabelvalue", "ojs/ojlabel", 'ojs/ojprogress'],
   function(ko, Context, moduleUtils, KnockoutTemplateUtils, CoreRouter, ModuleRouterAdapter, KnockoutRouterAdapter, UrlParamAdapter, ResponsiveUtils, ResponsiveKnockoutUtils, ArrayDataProvider, OffcanvasUtils) {
 
      function ControllerViewModel() {
@@ -46,6 +46,27 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
       // Router setup
       this.router = new CoreRouter(navData, {
         urlAdapter: new UrlParamAdapter()
+      });
+      
+      this.router.beforeStateChange.subscribe( (args) => {
+        var state = args.state;
+        var accept = args.accept;
+        // If we don't want to leave, block navigation
+        //if (currentViewmodel.isDirty) {
+        console.log(args);
+        
+        if(state && state.path != 'login') {
+            console.log(this);            
+            if(this.userLoggedIn && this.userLoggedIn() === "N") {
+            //if (currentViewmodel.isDirty) {
+                accept(Promise.reject('model is dirty'));
+                //alert("Unauthorized resource!");
+                var rootViewModel = ko.dataFor(document.getElementById('globalBody'));  
+                var msg = "Please login to access this resource";
+                rootViewModel.messages([{severity: 'warning', summary: 'Unauthorized resource', detail: msg, autoTimeout: 5000}]);
+            }                        
+        }          
+        //}
       });
       
       this.router.sync();
@@ -86,11 +107,11 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
     
     this.isAdmin = ko.observable(false);
 
-    this.scrapperServiceBaseUrl = ko.observable("http://144.22.36.129:8080/ScrapperConfig/api/");
+    this.scrapperServiceBaseUrl = ko.observable("https://cfg.internal.hhack.cl:8181/ScrapperConfig/api/");
 
     //this.scrapperServiceBaseUrl = ko.observable("http://instance-scrapper-apis.subnet01161944.vcn01161944.oraclevcn.com:8080/ScrapperConfig/api/");
 
-    this.tokenServiceBaseUrl = ko.observable("http://192.168.0.5:8181/TokenService/api/");
+    this.tokenServiceBaseUrl = ko.observable("https://idp.internal.hhack.cl:8181/TokenService/api/");
       
     this.messages = ko.observableArray();
   
@@ -150,7 +171,7 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
             
             rootViewModel.messages([{severity: 'error', summary: 'General Error', detail: msg, autoTimeout: 5000}]);                     
         });
-    });
+    }); 
     
     this.router.beforeStateChange.subscribe( (args) => {
         var state = args.state;
@@ -164,7 +185,7 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
             this.userLogin("Not yet logged in");
             this.userLoggedIn("N");                     
         }                  
-    });  
+    }); 
       
     this.menuItemAction = (event) => {             
           if (event.target.textContent.trim() === "Sign Out") {

@@ -13,21 +13,20 @@
         min-width: auto !important; 
     }
     .demo-table-container {
-        width: 100%;
-        height: 27rem;
+        width: 100%;        
     }
     
-          .oj-listview-item {
+    .oj-listview-item {
           padding: 0em !important;
-      }
+    }
       
-      .oj-text-field {
-          max-width: 100em !important;
-      }
+    .oj-text-field {
+        max-width: 100em !important;
+    }
       
-      .oj-searchselect {
-          max-width: 100em !important;
-      }
+    .oj-searchselect {
+        max-width: 100em !important;
+    }
     
 </STYLE>
 
@@ -71,27 +70,26 @@
               columns-default.sortable='disabled'              
               columns='[
                         {"field": "client",                        
-                        "headerText": "Client",                                                    
+                        "headerText": "Client",  
+                        "width": "18%",
                         "template": "clientTemplate"},
                         {"field": "retailer",                        
                         "headerText": "Retailer",                                                    
+                        "width": "18%",
                         "template": "retailerTemplate"},                          
                         {"field":"username",
                          "sortable": "enabled",
                          "headerText": "Username",
-                         "weight": "2",
-                         "minWidth": "10rem",
+                         "width": "18%",                                                  
                          "template": "userTemplate"},
                         {"field":"password",
                           "headerText": "Password",
-                          "sortable": "enabled",
-                          "minWidth": "8rem",
-                          "weight": "2",
+                          "sortable": "enabled",                          
+                          "width": "18%",
                           "template": "passwordTemplate"},
                         {"field":"company",
                           "sortable": "enabled",
-                          "weight": "2",
-                          "minWidth": "10rem",
+                          "width": "18%",
                           "headerText": "Company",
                           "template": "companyTemplate"},                        
                         { "headerText": "Action",                                                                              
@@ -114,11 +112,11 @@
       <template slot="userTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
           <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>            
@@ -129,11 +127,11 @@
       <template slot="passwordTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
           <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-          <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>
@@ -144,11 +142,11 @@
       <template slot="companyTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
           <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: x-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>
@@ -158,19 +156,19 @@
         
       <template slot="actionTemplate" data-oj-as="cell">
         <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <oj-button display='icons' chroming='callToAction' on-oj-action="[[handleUpdate]]">
+          <oj-button display='icons' chroming='solid' on-oj-action="[[handleUpdate]]">
             <span slot='startIcon' class="oj-ux-ico-edit"></span>
             Edit
           </oj-button>
         </oj-bind-if>
 
         <oj-bind-if test='[[cell.mode=="edit"]]'>
-          <oj-toolbar class="oj-sm-padding-0-vertical">
-            <oj-button display='icons' on-oj-action="[[handleDone]]">
+          <oj-toolbar class="oj-sm-padding-0-vertical oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+            <oj-button class="oj-flex-item" display='icons' chroming='solid' on-oj-action="[[handleDone]]">
               <span slot='startIcon' class="oj-ux-ico-check"></span>
               Save
             </oj-button>
-            <oj-button display='icons' on-oj-action="[[handleCancel]]">
+            <oj-button class="oj-flex-item" display='icons' chroming='solid' on-oj-action="[[handleCancel]]">
               <span slot='startIcon' class="oj-ux-ico-multiply"></span>
               Cancel
             </oj-button>
