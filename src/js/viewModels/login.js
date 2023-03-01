@@ -62,8 +62,7 @@ define(["knockout",
         self.signIn = function (event, data) {
                                  
             let element3 = document.getElementById("user");
-            let element4 = document.getElementById("password");
-                                            
+            let element4 = document.getElementById("password");                                                                    
                
             element3.validate().then((result3) => {
 
@@ -72,6 +71,9 @@ define(["knockout",
                     if (result3 === "valid" && result4 === "valid") {
                         // submit the form would go here
                         //alert("everything is valid; submit the form");   
+                        
+                        var rootViewModel = ko.dataFor(document.getElementById('globalBody'));                  
+                        rootViewModel.showProgress();
                         
                         var user = {};
             

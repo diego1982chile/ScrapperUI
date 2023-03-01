@@ -118,24 +118,30 @@
             </div>
           </div>
           <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
-            <oj-navigation-list id="navTabBar" class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
+            <!--oj-navigation-list id="navTabBar" class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
                                 data="[[navDataProvider]]"
                                 edge="top"
                                 item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                                 selection="{{selection.path}}">
-            </oj-navigation-list>
+            </oj-navigation-list-->
           </div>
         </header>
-        <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleAdapter.koObservableConfig]]">
+        <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleAdapter.koObservableConfig]]">                        
+                           
             <!-- Messages -->
             <oj-messages messages="[[messagesDataprovider]]" position="{}" display="notification">
-            </oj-messages> 
+            </oj-messages>              
             
-            <oj-progress style="width:200px" value="-1"></oj-progress>
+            <oj-dialog id="progress" cancel-behavior="none" title="Loading" modality="modeless">    
+               <div slot="body">
+                <oj-progress style="margin-bottom:20px; margin-top: 20px" class="oj-progress-bar-embedded" value="-1">
+                </oj-progress>                
+              </div>
+            </oj-dialog>            
             
             <oj-dialog id="dialogPreferences" dialog-title="Preferences" cancel-behavior="icon">                            
                 <div slot="body">                    
-                    <div class="oj-panel">
+                    <div class="oj-panel">                        
                         <p>
                           Reset all DB values. Please notice this action is not reversible.
                         </p>
@@ -144,7 +150,7 @@
                         </oj-button>
                     </div>                                                   
                 </div>       
-            </oj-dialog> 
+            </oj-dialog>            
 
         </oj-module>
         <footer class="oj-web-applayout-footer" role="contentinfo">

@@ -80,6 +80,8 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
       //this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
       
       this.navDataProvider = new oj.ArrayTableDataSource(navData.slice(0,1), {idAttribute: 'id'});
+      
+      this.dataProvider = new ArrayDataProvider(navData.slice(2), {keyAttributes: "path"});
 
       // Drawer
       // Close offcanvas on medium and larger screens
@@ -99,7 +101,7 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
 
     // Header            
     // Application Name used in Branding Area
-    this.appName = ko.observable("ScrapperUI");
+    this.appName = ko.observable("ScrapperConfig");
     // User Info used in Global Navigation area
     this.userLogin = ko.observable("Not yet logged in");
 
@@ -107,16 +109,16 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
     
     this.isAdmin = ko.observable(false);
 
-    this.scrapperServiceBaseUrl = ko.observable("https://cfg.internal.hhack.cl:8181/ScrapperConfig/api/");
+    this.scrapperServiceBaseUrl = ko.observable("REPLACE_ME");
 
     //this.scrapperServiceBaseUrl = ko.observable("http://instance-scrapper-apis.subnet01161944.vcn01161944.oraclevcn.com:8080/ScrapperConfig/api/");
 
-    this.tokenServiceBaseUrl = ko.observable("https://idp.internal.hhack.cl:8181/TokenService/api/");
+    this.tokenServiceBaseUrl = ko.observable("REPLACE_ME");
       
     this.messages = ko.observableArray();
   
     this.messagesDataprovider = new ArrayDataProvider(this.messages);
-
+          
 
     this.authorize = (token) => { 
         
@@ -128,7 +130,18 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
                     
         $.ajaxSetup({
             beforeSend: function (xhr) {                
-                xhr.setRequestHeader("Authorization", "Bearer " + token);                
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+                var rootViewModel = ko.dataFor(document.getElementById('globalBody')); 
+                /*
+                rootViewModel.sleep(2000).then(() => {                     
+                    rootViewModel.showProgress();                    
+                }); 
+                */
+            },
+            complete: function () {
+                var rootViewModel = ko.dataFor(document.getElementById('globalBody'));                  
+                rootViewModel.hideProgress();
+                return data;
             }
         });
         this.userLoggedIn("Y");
@@ -138,7 +151,7 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
         }        
         else {
             this.navDataProvider.reset(navData.slice(2), {idAttribute: 'id'});                                    
-        }
+        }                
         
         this.router.go({path: 'accounts'});
 
@@ -169,9 +182,12 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
                 msg = 'Internal Server Error [500].';
             }
             
+            rootViewModel.hideProgress();
+            
             rootViewModel.messages([{severity: 'error', summary: 'General Error', detail: msg, autoTimeout: 5000}]);                     
         });
     }); 
+    
     
     this.router.beforeStateChange.subscribe( (args) => {
         var state = args.state;
@@ -206,6 +222,20 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
     this.closeDialog = function(event, data) {                        
         document.getElementById("dialogPreferences").close();                 
     } 
+    
+    this.showProgress = function(event, data) {                        
+        document.getElementById("progress").open();                 
+    }
+    
+    this.hideProgress = function(event, data) {                        
+        document.getElementById("progress").close();                 
+    } 
+    
+            
+    this.sleep = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     
     self.reset = () => {    
         
