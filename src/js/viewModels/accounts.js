@@ -8,26 +8,35 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['knockout',         
+define(['knockout',   
+        'ojs/ojresponsiveutils', 
+        'ojs/ojresponsiveknockoututils',
         'ojs/ojarraydataprovider',     
         "ojs/ojlistdataproviderview",  
         "ojs/ojdataprovider",
         'ojs/ojinputtext',                
         'ojs/ojbufferingdataprovider',        
         'ojs/ojarraytabledatasource',                
-        'ojs/ojtable'
+        'ojs/ojtable',
+        'ojs/ojmenu', 
+        'ojs/ojoption'
         ],
- function(ko, ArrayDataProvider, ListDataProviderView, ojdataprovider_1) {
+ function(ko, responsiveUtils, responsiveKnockoutUtils, ArrayDataProvider, ListDataProviderView, ojdataprovider_1) {
      
     function DashboardViewModel() {
 
         var self = this;      
-        
+       
+        self.isSmall = responsiveKnockoutUtils.createMediaQueryObservable(
+        responsiveUtils.getFrameworkQuery(responsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY));
+        self.isMediumOrUp = responsiveKnockoutUtils.createMediaQueryObservable(
+        responsiveUtils.getFrameworkQuery(responsiveUtils.FRAMEWORK_QUERY_KEY.MD_UP));
+                           
         self.filter = ko.observable("");                 
         
         self.editRow = ko.observable();
         
-        self.data = ko.observableArray();
+        self.data = ko.observableArray();          
 
         self.datasource = ko.computed(function () {                        
           
@@ -357,6 +366,29 @@ define(['knockout',
             return toReturn;                                                                           
         };
         
+        self.menuItemAction = function(event, context) {   
+            
+            console.log(context);
+            
+            console.log(event);
+            
+            if(event.detail.selectedValue === 'edit') {             
+                document.getElementById("client").value = context.data.client.id;
+                document.getElementById("retailer").value = context.data.retailer.id;            
+                document.getElementById("user").value = context.data.username;
+                document.getElementById("password").value = context.data.password;
+                document.getElementById("company").value = context.data.company;          
+
+                self.openDialog(event, context.data);               
+            }
+            
+            if(event.detail.selectedValue === 'delete') {
+                alert('delete');
+                self.editRow({ rowKey: context.data.id });
+                self.rowData = context.data;
+                self.handleCancel();
+            }                          
+        }       
         
         self.openDialog = function(event, data) {                        
             document.getElementById("dialog1").open();                 

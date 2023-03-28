@@ -64,7 +64,9 @@
           </oj-button>  
         </div> 
         
-        <oj-table id="table"
+        
+        <oj-bind-if test="[[isMediumOrUp]]">                  
+            <oj-table id="table"
               aria-label="Departments Table"
               class='oj-bg-body demo-table-container'
               dnd='{"reorder": {"columns": "enabled"}}'
@@ -103,86 +105,128 @@
                           "style":"padding-top: 0px; padding-bottom: 0px; text-align: center;",
                           "template": "actionTemplate"}]'>
 
-      <template slot="readOnlyTemplate" data-oj-as="cell">
-        <oj-bind-text value="[[cell.data]]"></oj-bind-text>
-      </template>  
-          
-      <template slot="clientTemplate" data-oj-as="cell">
-        <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
-      </template> 
-          
-      <template slot="retailerTemplate" data-oj-as="cell">
-        <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
-      </template> 
+            <template slot="readOnlyTemplate" data-oj-as="cell">
+              <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+            </template>  
 
-      <template slot="userTemplate" data-oj-as="cell">
-        <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-        </oj-bind-if>
+            <template slot="clientTemplate" data-oj-as="cell">
+              <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
+            </template> 
 
-        <oj-bind-if test='[[cell.mode=="edit"]]'>            
-          <oj-input-text id="it1" value="{{rowData.username}}" class="editable"></oj-input-text>          
-        </oj-bind-if>
-      </template>
+            <template slot="retailerTemplate" data-oj-as="cell">
+              <oj-bind-text value="[[cell.data.name]]"></oj-bind-text>
+            </template> 
+
+            <template slot="userTemplate" data-oj-as="cell">
+              <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+              </oj-bind-if>
+
+              <oj-bind-if test='[[cell.mode=="edit"]]'>            
+                <oj-input-text id="it1" value="{{rowData.username}}" class="editable"></oj-input-text>          
+              </oj-bind-if>
+            </template>
+
+            <template slot="passwordTemplate" data-oj-as="cell">
+              <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+              </oj-bind-if>
+
+              <oj-bind-if test='[[cell.mode=="edit"]]'>
+                <oj-input-text id="it2" value="{{rowData.password}}" class="editable"></oj-input-text>            
+              </oj-bind-if>
+            </template>
+
+            <template slot="companyTemplate" data-oj-as="cell">
+              <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+              </oj-bind-if>
+
+              <oj-bind-if test='[[cell.mode=="edit"]]'>
+                <oj-input-text id="it3" value="{{rowData.company}}" class="editable"></oj-input-text>            
+              </oj-bind-if>
+            </template>
+
+            <template slot="actionTemplate" data-oj-as="cell">
+              <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                <oj-button display='icons' chroming='solid' on-oj-action="[[handleUpdate]]">
+                  <span slot='startIcon' class="oj-ux-ico-edit"></span>
+                  Edit
+                </oj-button>
+              </oj-bind-if>
+
+              <oj-bind-if test='[[cell.mode=="edit"]]'>
+                <oj-toolbar class="oj-sm-padding-0-vertical oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                  <oj-button class="oj-flex-item" display='icons' chroming='solid' on-oj-action="[[handleDone]]">
+                    <span slot='startIcon' class="oj-ux-ico-check"></span>
+                    Save
+                  </oj-button>
+                  <oj-button class="oj-flex-item" display='icons' chroming='solid' on-oj-action="[[handleCancel]]">
+                    <span slot='startIcon' class="oj-ux-ico-multiply"></span>
+                    Cancel
+                  </oj-button>
+                </oj-toolbar>
+              </oj-bind-if>
+            </template>
+          </oj-table>
+            
+        </oj-bind-if>  
         
-      <template slot="passwordTemplate" data-oj-as="cell">
-        <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+        <oj-bind-if test="[[isSmall]]">
+            <oj-list-view
+            id="listview"
+            aria-label="simple list"
+            data="[[datasource]]"
+            class="oj-listview-item-padding-off">
+            <template slot="itemTemplate" data-oj-as="item">
+              <oj-list-item-layout>
+                <span class="oj-typography-body-md oj-text-color-primary">
+                  <oj-bind-text value="[[item.data.client.name]]"></oj-bind-text>
+                </span>
+                <!--oj-avatar slot="leading" size="xs" src="[[item.data.image]]"></oj-avatar-->
+                <span slot="secondary" class="oj-typography-body-sm oj-text-color-secondary">
+                  <oj-bind-text value="[[item.data.retailer.name]]"></oj-bind-text>
+                </span>
+                <div slot="action">
+                    <oj-menu-button id="menuButton" class="oj-button-sm">
+                    Actions
+                        <oj-menu id="myMenu" slot="menu" on-oj-menu-action="[[menuItemAction]]">                     
+                            <oj-option id="delete" value="delete">
+                              <span slot="startIcon" :class=""></span>
+                              <span>
+                                <oj-bind-text value="Delete"></oj-bind-text>
+                              </span>
+                            </oj-option>
+                            <oj-option id="edit" value="edit">
+                              <span slot="startIcon" :class=""></span>
+                              <span>
+                                <oj-bind-text value="Edit"></oj-bind-text>
+                              </span>
+                            </oj-option>                        
+                        </oj-menu>
+                    </oj-menu-button>
+                </div>                
+              </oj-list-item-layout>
+            </template>
+          </oj-list-view>
+                                         
         </oj-bind-if>
-
-        <oj-bind-if test='[[cell.mode=="edit"]]'>
-          <oj-input-text id="it2" value="{{rowData.password}}" class="editable"></oj-input-text>            
-        </oj-bind-if>
-      </template>
-        
-      <template slot="companyTemplate" data-oj-as="cell">
-        <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-            <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-        </oj-bind-if>
-
-        <oj-bind-if test='[[cell.mode=="edit"]]'>
-          <oj-input-text id="it3" value="{{rowData.company}}" class="editable"></oj-input-text>            
-        </oj-bind-if>
-      </template>
-        
-      <template slot="actionTemplate" data-oj-as="cell">
-        <oj-bind-if test='[[cell.mode=="navigation"]]'>
-          <oj-button display='icons' chroming='solid' on-oj-action="[[handleUpdate]]">
-            <span slot='startIcon' class="oj-ux-ico-edit"></span>
-            Edit
-          </oj-button>
-        </oj-bind-if>
-
-        <oj-bind-if test='[[cell.mode=="edit"]]'>
-          <oj-toolbar class="oj-sm-padding-0-vertical oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
-            <oj-button class="oj-flex-item" display='icons' chroming='solid' on-oj-action="[[handleDone]]">
-              <span slot='startIcon' class="oj-ux-ico-check"></span>
-              Save
-            </oj-button>
-            <oj-button class="oj-flex-item" display='icons' chroming='solid' on-oj-action="[[handleCancel]]">
-              <span slot='startIcon' class="oj-ux-ico-multiply"></span>
-              Cancel
-            </oj-button>
-          </oj-toolbar>
-        </oj-bind-if>
-      </template>
-    </oj-table>                    
-        
+                                          
     </oj-form-layout>    
           
     <oj-dialog id="dialog1" dialog-title="New Account" cancel-behavior="icon">
@@ -242,7 +286,7 @@
                 </oj-input-text>
             </oj-form-layout> 
         </div>
-        <div slot="footer">
+        <div slot="footer">         
           <oj-button id="okButton" chroming="callToAction" on-oj-action="[[createAccount]]">Submit</oj-button>
         </div>
     </oj-dialog>          

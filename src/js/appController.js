@@ -26,12 +26,11 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
 
       document.getElementById('globalBody').addEventListener('announce', announcementHandler, false);
 
-
       // Media queries for repsonsive layouts
       const smQuery = ResponsiveUtils.getFrameworkQuery(ResponsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY);
       this.smScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(smQuery);
       const mdQuery = ResponsiveUtils.getFrameworkQuery(ResponsiveUtils.FRAMEWORK_QUERY_KEY.MD_UP);
-      this.mdScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(mdQuery);
+      this.mdScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(mdQuery);     
 
       let navData = [
         { path: '', id: 'login', detail: { label: 'Login', iconClass: 'oj-ux-ico-information-s' }, redirect: 'login' },
@@ -109,11 +108,11 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
     
     this.isAdmin = ko.observable(false);
 
-    this.scrapperServiceBaseUrl = ko.observable("REPLACE_ME");
+    this.scrapperServiceBaseUrl = ko.observable("https://cfg.internal.hhack.cl:8181/ScrapperConfig/api/");
 
     //this.scrapperServiceBaseUrl = ko.observable("http://instance-scrapper-apis.subnet01161944.vcn01161944.oraclevcn.com:8080/ScrapperConfig/api/");
 
-    this.tokenServiceBaseUrl = ko.observable("REPLACE_ME");
+    this.tokenServiceBaseUrl = ko.observable("https://idp.internal.hhack.cl:8181/TokenService/api/");
       
     this.messages = ko.observableArray();
   
@@ -141,7 +140,6 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
             complete: function () {
                 var rootViewModel = ko.dataFor(document.getElementById('globalBody'));                  
                 rootViewModel.hideProgress();
-                return data;
             }
         });
         this.userLoggedIn("Y");

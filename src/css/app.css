@@ -106,11 +106,15 @@ html[dir="rtl"] .demo-oracle-icon {
 
 .content-header-top {
     background-image: url("images/content-header-top.png");
-    height: .6rem;
+    height: .3rem;
     border-radius: 6px 6px 0 0;
 }
 
 .custom-menu-item {
     font-size: 1.4em !important;
     padding: 5px
+}
+
+.danger {
+    background-color: #d63b25 !important;
 }
