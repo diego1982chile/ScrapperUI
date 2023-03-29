@@ -59,7 +59,7 @@
            placeholder="Type to filter" on-raw-value-changed="[[handleValueChanged]]"
            value="{{filter}}" clear-icon="always" style="max-width:30em">                         
           </oj-input-text>
-          <oj-button chroming="callToAction" id='borderlessPushIcon' on-oj-action="[[openDialog]]" style="float:right" >                      
+          <oj-button chroming="callToAction" id='borderlessPushIcon' on-oj-action="[[handleCreate]]" style="float:right" >                      
             New Account
           </oj-button>  
         </div> 
@@ -196,31 +196,23 @@
             <template slot="itemTemplate" data-oj-as="item">
               <oj-list-item-layout>
                 <span class="oj-typography-body-md oj-text-color-primary">
+                  <oj-bind-text value="[[item.data.id]]"></oj-bind-text>
+                </span>
+                <span class="oj-typography-body-md oj-text-color-primary">
                   <oj-bind-text value="[[item.data.client.name]]"></oj-bind-text>
                 </span>
                 <!--oj-avatar slot="leading" size="xs" src="[[item.data.image]]"></oj-avatar-->
                 <span slot="secondary" class="oj-typography-body-sm oj-text-color-secondary">
                   <oj-bind-text value="[[item.data.retailer.name]]"></oj-bind-text>
                 </span>
-                <div slot="action">
-                    <oj-menu-button id="menuButton" class="oj-button-sm">
-                    Actions
-                        <oj-menu id="myMenu" slot="menu" on-oj-menu-action="[[menuItemAction]]">                     
-                            <oj-option id="delete" value="delete">
-                              <span slot="startIcon" :class=""></span>
-                              <span>
-                                <oj-bind-text value="Delete"></oj-bind-text>
-                              </span>
-                            </oj-option>
-                            <oj-option id="edit" value="edit">
-                              <span slot="startIcon" :class=""></span>
-                              <span>
-                                <oj-bind-text value="Edit"></oj-bind-text>
-                              </span>
-                            </oj-option>                        
-                        </oj-menu>
-                    </oj-menu-button>
-                </div>                
+                <oj-button slot="action" display='icons' chroming='solid' on-oj-action="[[handleEdit]]">
+                  <span slot='startIcon' class="oj-ux-ico-edit"></span>
+                  Edit
+                </oj-button>
+                <oj-button slot="action" display='icons' chroming='solid' on-oj-action="[[handleDelete]]">
+                  <span slot='startIcon' class="oj-ux-ico-multiply"></span>
+                  Delete
+                </oj-button>                       
               </oj-list-item-layout>
             </template>
           </oj-list-view>
@@ -229,9 +221,9 @@
                                           
     </oj-form-layout>    
           
-    <oj-dialog id="dialog1" dialog-title="New Account" cancel-behavior="icon">
+    <oj-dialog id="dialog1" dialog-title="New Account" cancel-behavior="icon" style="width: 100vw;">
         <div slot="body">
-            <oj-form-layout id="myForm" label-edge="start" columns="1" max-columns="1" style="width:100%">    
+            <oj-form-layout id="myForm" label-edge="start" columns="1" max-columns="1" style="width:100%">                   
                                 
                 <oj-select-single 
                     id="client" 

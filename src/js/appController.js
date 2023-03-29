@@ -108,9 +108,9 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
     
     this.isAdmin = ko.observable(false);
 
-    this.scrapperServiceBaseUrl = ko.observable("PUT_YOUR_VALUE");
+    this.scrapperServiceBaseUrl = ko.observable("https://cfg.internal.hhack.cl:8181/ScrapperConfig/api/");
 
-    this.tokenServiceBaseUrl = ko.observable("PUT_YOUR_VALUE");
+    this.tokenServiceBaseUrl = ko.observable("https://idp.internal.hhack.cl:8181/TokenService/api/");
       
     this.messages = ko.observableArray();
   

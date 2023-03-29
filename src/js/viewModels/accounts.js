@@ -226,6 +226,8 @@ define(['knockout',
             });                                                                           
         };
         
+        self.id = ko.observable();
+        
         self.clientArray = ko.observableArray();                   
 
         self.client = ko.observable();
@@ -272,7 +274,7 @@ define(['knockout',
         
         self.company = ko.observable();
         
-        self.createAccount = function (event, data) {
+        self.createAccount = function (event, data) {           
             
             let element1 = document.getElementById("client");
             let element2 = document.getElementById("retailer");            
@@ -294,16 +296,18 @@ define(['knockout',
                                 // submit the form would go here
                                 //alert("everything is valid; submit the form");
                                 var account = {};
+                                
+                                console.log(JSON.stringify(data.id()));
+                                
+                                account.id = self.id();
             
                                 account.client = self.getClientById(data.client());
                                 account.retailer = self.getRetailerById(data.retailer());
-                                account.user = data.user();
+                                account.username = data.user();
                                 account.password = data.password();
                                 account.company = data.company();
 
-                                //console.log(JSON.stringify(account));
-                                
-                                //alert(JSON.stringify(account));
+                                //console.log(JSON.stringify(account));                               
 
                                 $.ajax({                    
                                     type: "POST",
@@ -317,23 +321,26 @@ define(['knockout',
                                         ko.dataFor(document.getElementById('globalBody')).messages([{severity: 'info', summary: 'Succesfuly Saved', detail: msg, autoTimeout: 5000}]);
                                         $("input").val(""); 
                                         var val = $("#filter").val();
-                                        $("#filter").val(" ");
-                                        self.sleep(100).then(() => {   
+                                        $("#filter").val(val + " ");
+                                        self.sleep(1000).then(() => {   
                                             $("#filter").val(val);
-                                        });                                                                                 
-                                        document.getElementById('table').refresh();
-                                        document.getElementById("dialog1").close();     
+                                        });                                        
+                                        if(self.isMediumOrUp()) {
+                                            document.getElementById('table').refresh();
+                                        }                                                                              
+                                        self.handleCreate(event, data);
+                                        self.sleep(100).then(() => { 
+                                            document.getElementById("dialog1").close();   
+                                        });                                                                                                                                                  
                                     },
                                     error: function (request, status, error) {                                                                  
                                     },                                  
                                 });            
-                            }
-                         
+                            }                         
                         });
                     });
                 });
-            });
-                                                
+            });                                                
         }
         
         self.getRetailerById = (id) => {                      
@@ -365,32 +372,47 @@ define(['knockout',
             
             return toReturn;                                                                           
         };
+                
         
-        self.menuItemAction = function(event, context) {   
+        self.handleCreate = function(event, context) {   
+            self.id(null);
+            self.openDialog(event, context.data);
+        }
+        
+        self.handleEdit = function(event, context) {   
+                        
+            self.id(context.data.id);
+            self.client(context.data.client.id);
+            self.retailer(context.data.retailer.id);
+            self.user(context.data.username);
+            self.password(context.data.password);
+            self.company(context.data.company);
+            
+            document.getElementById("dialog1").open();  
+            
+            //self.openDialog(event, context.data);                                  
+        } 
+        
+        self.handleDelete = function(event, context) {   
             
             console.log(context);
             
             console.log(event);
-            
-            if(event.detail.selectedValue === 'edit') {             
-                document.getElementById("client").value = context.data.client.id;
-                document.getElementById("retailer").value = context.data.retailer.id;            
-                document.getElementById("user").value = context.data.username;
-                document.getElementById("password").value = context.data.password;
-                document.getElementById("company").value = context.data.company;          
-
-                self.openDialog(event, context.data);               
-            }
-            
-            if(event.detail.selectedValue === 'delete') {
-                alert('delete');
-                self.editRow({ rowKey: context.data.id });
-                self.rowData = context.data;
-                self.handleCancel();
-            }                          
-        }       
+                       
+            self.editRow({ rowKey: context.data.id });
+            self.rowData = context.data;
+            self.handleCancel();
+                                   
+        } 
         
-        self.openDialog = function(event, data) {                        
+        self.openDialog = function(event, data) {   
+            if(!self.id()) {
+                self.client(null);
+                self.retailer(null);
+                self.user(null);
+                self.password(null);
+                self.company(null);
+            }
             document.getElementById("dialog1").open();                 
         } 
         
