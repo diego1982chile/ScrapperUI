@@ -42,10 +42,7 @@
  
 <div class="oj-hybrid-padding">
           
-  <div data-bind="ojModule: { name: 'menu'}" class=""></div>  
-      
-  <hr>
-  <br>  
+  <div data-bind="ojModule: { name: 'menu'}" class=""></div>         
       
   <div id="componentDemoContent" class="oj-flex">       
       
@@ -63,9 +60,9 @@
             New Account
           </oj-button>  
         </div> 
-        
-        
+                
         <oj-bind-if test="[[isMediumOrUp]]">                  
+            
             <oj-table id="table"
               aria-label="Departments Table"
               class='oj-bg-body demo-table-container'
@@ -196,9 +193,6 @@
             <template slot="itemTemplate" data-oj-as="item">
               <oj-list-item-layout>
                 <span class="oj-typography-body-md oj-text-color-primary">
-                  <oj-bind-text value="[[item.data.id]]"></oj-bind-text>
-                </span>
-                <span class="oj-typography-body-md oj-text-color-primary">
                   <oj-bind-text value="[[item.data.client.name]]"></oj-bind-text>
                 </span>
                 <!--oj-avatar slot="leading" size="xs" src="[[item.data.image]]"></oj-avatar-->
@@ -221,14 +215,15 @@
                                           
     </oj-form-layout>    
           
-    <oj-dialog id="dialog1" dialog-title="New Account" cancel-behavior="icon" style="width: 100vw;">
+    <oj-dialog id="dialog1" dialog-title="New Account" cancel-behavior="icon">
         <div slot="body">
             <oj-form-layout id="myForm" label-edge="start" columns="1" max-columns="1" style="width:100%">                   
                                 
                 <oj-select-single 
-                    id="client" 
+                    id="client"                     
                     label-hint="Client"                    
-                    value="{{client}}"                        
+                    value="{{client}}" 
+                    readonly="[[readonly]]"
                     required
                     item-text="[[getItemText]]"                        
                     data="[[clients]]">
@@ -243,8 +238,9 @@
                 
                 <oj-select-single 
                     id="retailer" 
-                    label-hint="Retailer"                    
+                    label-hint="Retailer"                         
                     value="{{retailer}}"                        
+                    readonly="[[readonly]]"
                     required
                     item-text="[[getItemText]]"                        
                     data="[[retailers]]">

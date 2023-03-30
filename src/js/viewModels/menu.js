@@ -7,17 +7,24 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(["knockout",                  
+define(["knockout",    
+        'ojs/ojresponsiveutils', 
+        'ojs/ojresponsiveknockoututils',
         "ojs/ojarraydataprovider", 
         "ojs/ojconveyorbelt"
     ],
- function(ko, ArrayDataProvider) {
+ function(ko, responsiveUtils, responsiveKnockoutUtils, ArrayDataProvider) {
 
     function MenuViewModel() {                        
         
         var self = this;
         // Below are a set of the ViewModel methods invoked by the oj-module component.
         // Please reference the oj-module jsDoc for additional information. 
+        
+        self.isSmall = responsiveKnockoutUtils.createMediaQueryObservable(
+        responsiveUtils.getFrameworkQuery(responsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY));
+        self.isMediumOrUp = responsiveKnockoutUtils.createMediaQueryObservable(
+        responsiveUtils.getFrameworkQuery(responsiveUtils.FRAMEWORK_QUERY_KEY.MD_UP));
         
         var rootViewModel = ko.dataFor(document.getElementById('globalBody'));
 

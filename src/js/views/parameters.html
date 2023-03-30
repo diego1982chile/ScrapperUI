@@ -45,92 +45,134 @@
                    value="{{filter}}" clear-icon="always">                         
             </oj-input-text>
 
-            <oj-button chroming="callToAction" on-oj-action="[[openDialog]]" id='borderlessPushIcon' style="float:right" >                      
+            <oj-button chroming="callToAction" on-oj-action="[[handleCreate]]" id='borderlessPushIcon' style="float:right" >                      
                 New Parameter
             </oj-button> 
-        </div>   
+        </div>
         
-        <oj-table id="table" style="width:100%"
-              aria-label="Departments Table"
-              class='oj-bg-body demo-table-container'
-              dnd='{"reorder": {"columns": "enabled"}}'
-              data='[[datasource]]'
-              edit-mode='rowEdit'
-              edit-row='{{editRow}}'
-              on-oj-before-row-edit='[[beforeRowEditListener]]'
-              on-oj-before-row-edit-end='[[beforeRowEditEndListener]]'
-              columns-default.sortable='disabled'              
-              columns='[
-                        {"field": "name",                          
-                        "headerText": "Name",    
-                        "width": "42%",
-                        "template": "nameTemplate"}, 
-                        {"field": "value",                          
-                        "headerText": "Value",  
-                        "width": "42%",
-                        "template": "valueTemplate"},    
-                        { "headerText": "Action",              
-                          "width": "6em",                          
-                          "headerStyle": "text-align: center;",
-                          "style":"padding-top: 0px; padding-bottom: 0px; text-align: center;",
-                          "template": "actionTemplate"}
-                          ]'>
+        <oj-bind-if test="[[isMediumOrUp]]">                  
+        
+            <oj-table id="table" style="width:100%"
+                  aria-label="Departments Table"
+                  class='oj-bg-body demo-table-container'
+                  dnd='{"reorder": {"columns": "enabled"}}'
+                  data='[[datasource]]'
+                  edit-mode='rowEdit'
+                  edit-row='{{editRow}}'
+                  on-oj-before-row-edit='[[beforeRowEditListener]]'
+                  on-oj-before-row-edit-end='[[beforeRowEditEndListener]]'
+                  columns-default.sortable='disabled'              
+                  columns='[
+                            {"field": "name",                          
+                            "headerText": "Name",    
+                            "width": "42%",
+                            "template": "nameTemplate"}, 
+                            {"field": "value",                          
+                            "headerText": "Value",  
+                            "width": "42%",
+                            "template": "valueTemplate"},    
+                            { "headerText": "Action",              
+                              "width": "6em",                          
+                              "headerStyle": "text-align: center;",
+                              "style":"padding-top: 0px; padding-bottom: 0px; text-align: center;",
+                              "template": "actionTemplate"}
+                              ]'>
 
-            <template slot="readOnlyTemplate" data-oj-as="cell">
-              <oj-bind-text value="[[cell.data]]"></oj-bind-text>
-            </template>          
+                <template slot="readOnlyTemplate" data-oj-as="cell">
+                  <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+                </template>          
 
-            <template slot="nameTemplate" data-oj-as="cell">
-              <oj-bind-if test='[[cell.mode=="navigation"]]'>
-                <oj-bind-text value="[[cell.data]]"></oj-bind-text>
-              </oj-bind-if>
+                <template slot="nameTemplate" data-oj-as="cell">
+                  <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                    <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+                  </oj-bind-if>
 
-              <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.name}}" required class="editable"></oj-input-text>
-              </oj-bind-if>
-            </template>
+                  <oj-bind-if test='[[cell.mode=="edit"]]'>            
+                    <oj-input-text id="it1" value="{{rowData.name}}" required class="editable"></oj-input-text>
+                  </oj-bind-if>
+                </template>
+
+                <template slot="valueTemplate" data-oj-as="cell">
+                  <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                    <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                  </oj-bind-if>
+
+                  <oj-bind-if test='[[cell.mode=="edit"]]'>            
+                    <oj-input-text id="it1" value="{{rowData.value}}" required class="editable"></oj-input-text>                
+                  </oj-bind-if>
+                </template>
+
+                <template slot="actionTemplate" data-oj-as="cell">
+                  <oj-bind-if test='[[cell.mode=="navigation"]]'>
+                    <oj-button display='icons' chroming='solid' on-oj-action="[[handleUpdate]]">
+                      <span slot='startIcon' class="oj-ux-ico-edit"></span>
+                      Edit
+                    </oj-button>
+                  </oj-bind-if>
+
+                  <oj-bind-if test='[[cell.mode=="edit"]]'>
+                    <oj-toolbar class="oj-sm-padding-0-vertical oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                      <oj-button class="oj-flex-item" chroming='solid' display='icons' on-oj-action="[[handleDone]]">
+                        <span slot='startIcon' class="oj-ux-ico-check"></span>
+                        Save
+                      </oj-button>
+                      <oj-button class="oj-flex-item" chroming='solid' display='icons' on-oj-action="[[handleCancel]]">
+                        <span slot='startIcon' class="oj-ux-ico-multiply"></span>
+                        Cancel
+                      </oj-button>
+                    </oj-toolbar>
+                  </oj-bind-if>
+                </template>
+              </oj-table>    
             
-            <template slot="valueTemplate" data-oj-as="cell">
-              <oj-bind-if test='[[cell.mode=="navigation"]]'>
-                <!--oj-bind-text value="[[cell.data]]"></oj-bind-text-->
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-                <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
-              </oj-bind-if>
-
-              <oj-bind-if test='[[cell.mode=="edit"]]'>            
-                <oj-input-text id="it1" value="{{rowData.value}}" required class="editable"></oj-input-text>                
-              </oj-bind-if>
-            </template>
-
-            <template slot="actionTemplate" data-oj-as="cell">
-              <oj-bind-if test='[[cell.mode=="navigation"]]'>
-                <oj-button display='icons' chroming='solid' on-oj-action="[[handleUpdate]]">
-                  <span slot='startIcon' class="oj-ux-ico-edit"></span>
-                  Edit
-                </oj-button>
-              </oj-bind-if>
-
-              <oj-bind-if test='[[cell.mode=="edit"]]'>
-                <oj-toolbar class="oj-sm-padding-0-vertical oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
-                  <oj-button class="oj-flex-item" chroming='solid' display='icons' on-oj-action="[[handleDone]]">
-                    <span slot='startIcon' class="oj-ux-ico-check"></span>
-                    Save
-                  </oj-button>
-                  <oj-button class="oj-flex-item" chroming='solid' display='icons' on-oj-action="[[handleCancel]]">
-                    <span slot='startIcon' class="oj-ux-ico-multiply"></span>
-                    Cancel
-                  </oj-button>
-                </oj-toolbar>
-              </oj-bind-if>
-            </template>
-          </oj-table>                          
+        </oj-bind-if>  
+        
+        <oj-bind-if test="[[isSmall]]">
+            
+            <oj-list-view
+            id="listview"
+            aria-label="simple list"
+            data="[[datasource]]"
+            class="oj-listview-item-padding-off">
+                <template slot="itemTemplate" data-oj-as="item">
+                  <oj-list-item-layout>
+                    <span class="oj-typography-body-md oj-text-color-primary">
+                      <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                    </span>
+                    <!--oj-avatar slot="leading" size="xs" src="[[item.data.image]]"></oj-avatar-->
+                    <span slot="secondary" class="oj-typography-body-sm oj-text-color-secondary">
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                        <span class="oj-ux-ico-asterisk" style="font-size: xx-small"></span>
+                    </span>
+                    <oj-button slot="action" display='icons' chroming='solid' on-oj-action="[[handleEdit]]">
+                      <span slot='startIcon' class="oj-ux-ico-edit"></span>
+                      Edit
+                    </oj-button>
+                    <oj-button slot="action" display='icons' chroming='solid' on-oj-action="[[handleDelete]]">
+                      <span slot='startIcon' class="oj-ux-ico-multiply"></span>
+                      Delete
+                    </oj-button>                       
+                  </oj-list-item-layout>
+                </template>
+            </oj-list-view>
+            
+        </oj-bind-if>
 
     </oj-form-layout>   
         

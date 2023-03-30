@@ -8,7 +8,9 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['knockout',         
+define(['knockout',
+        'ojs/ojresponsiveutils',
+        'ojs/ojresponsiveknockoututils',
         'ojs/ojarraydataprovider',     
         "ojs/ojlistdataproviderview",  
         "ojs/ojdataprovider",
@@ -19,13 +21,20 @@ define(['knockout',
         "ojs/ojbutton", 
         "ojs/ojformlayout",
         ],
- function(ko, ArrayDataProvider, ListDataProviderView, ojdataprovider_1) {
+ function(ko, responsiveUtils, responsiveKnockoutUtils, ArrayDataProvider, ListDataProviderView, ojdataprovider_1) {
      
     function DashboardViewModel() {
         // Below are a set of the ViewModel methods invoked by the oj-module component.
         // Please reference the oj-module jsDoc for additional information.
 
         var self = this;
+        
+        self.isSmall = responsiveKnockoutUtils.createMediaQueryObservable(
+        responsiveUtils.getFrameworkQuery(responsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY));
+        self.isMediumOrUp = responsiveKnockoutUtils.createMediaQueryObservable(
+        responsiveUtils.getFrameworkQuery(responsiveUtils.FRAMEWORK_QUERY_KEY.MD_UP));
+
+        self.id = ko.observable();
         
         self.filter = ko.observable("");                 
         
@@ -230,7 +239,11 @@ define(['knockout',
             });                                                                           
         };
         
-        self.openDialog = function(event, data) {                        
+        self.openDialog = function(event, data) {      
+            if(!self.id()) {
+                self.newParameter(null);
+                self.newValue(null);                
+            }
             document.getElementById("dialog1").open();                 
         }      
         
@@ -247,6 +260,8 @@ define(['knockout',
                     if (result1 === "valid" && result2 === "valid") {
 
                         var parameter = {};
+                        
+                        parameter.id = self.id();
 
                         parameter.name = self.newParameter();
                         parameter.value = self.newValue();
@@ -266,8 +281,7 @@ define(['knockout',
                                 document.getElementById("dialog1").close();    
                                 var val = $("#filter").val();
                                 $("#filter").val(" ");
-                                $("#filter").val(val);
-                                self.newHolding(null);
+                                $("#filter").val(val);                                
                             },
                             error: function (request, status, error) {                                                           
                             },                                  
@@ -276,7 +290,35 @@ define(['knockout',
                 });
             });
 
-        }                            
+        }
+        
+        self.handleCreate = function(event, context) {   
+            self.id(null);
+            self.openDialog(event, context.data);
+        }
+        
+        self.handleEdit = function(event, context) {   
+                        
+            self.id(context.data.id);
+            self.newParameter(context.data.name);
+            self.newValue(context.data.value);            
+            
+            document.getElementById("dialog1").open();  
+            
+            //self.openDialog(event, context.data);                                  
+        } 
+        
+        self.handleDelete = function(event, context) {   
+            
+            console.log(context);
+            
+            console.log(event);
+                       
+            self.editRow({ rowKey: context.data.id });
+            self.rowData = context.data;
+            self.handleCancel();
+                                   
+        } 
                                                         
     }
     

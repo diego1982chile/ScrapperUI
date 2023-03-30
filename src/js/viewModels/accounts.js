@@ -413,12 +413,22 @@ define(['knockout',
                 self.password(null);
                 self.company(null);
             }
+            if(self.isSmall()) {
+                $("#dialog1").css("width", "100vw");
+            }    
+            else {
+                $("#dialog1").css("width", "");
+            }            
             document.getElementById("dialog1").open();                 
         } 
         
         self.sleep = (ms) => {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
+        
+        self.readonly = ko.computed(function () {               
+           return self.id() !== null; 
+        });
         
     }
     

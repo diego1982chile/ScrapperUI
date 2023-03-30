@@ -11,21 +11,25 @@
     
 </STYLE>
  
-<div class="oj-hybrid-padding">         
-  
-    <oj-conveyor-belt id="conveyor">
-        
-        <oj-tab-bar edge="top" data="[[dataProvider]]" selection="{{selection.path}}" style="display: inline-flex">
-            <template slot="itemTemplate" data-oj-as="item">
-              <oj-bind-if test="[[item.data.detail]]">
-                <li :id="[[item.data.path]]" style="padding-inline-start: 1em; padding-inline-end: 1em" class="oj-sm-justify-content-center custom-menu-item">             
-                  <oj-bind-text value="[[item.data.detail.label]]"></oj-bind-text>                        
-                </li>
-              </oj-bind-if>
-            </template>
-        </oj-tab-bar>
-        
-        
-    </oj-conveyor-belt>        
-    
-</div>
+<oj-bind-if test="[[isMediumOrUp]]"> 
+    <div class="oj-hybrid-padding">         
+
+        <oj-conveyor-belt id="conveyor">
+
+            <oj-tab-bar edge="top" data="[[dataProvider]]" selection="{{selection.path}}" style="display: inline-flex">
+                <template slot="itemTemplate" data-oj-as="item">
+                  <oj-bind-if test="[[item.data.detail]]">
+                    <li :id="[[item.data.path]]" style="padding-inline-start: 1em; padding-inline-end: 1em" class="oj-sm-justify-content-center custom-menu-item">             
+                      <oj-bind-text value="[[item.data.detail.label]]"></oj-bind-text>                        
+                    </li>
+                  </oj-bind-if>
+                </template>
+            </oj-tab-bar>
+
+
+        </oj-conveyor-belt>        
+
+    </div>
+       
+    <br> 
+</oj-bind-if>  
